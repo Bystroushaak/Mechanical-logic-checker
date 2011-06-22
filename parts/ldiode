@@ -2,6 +2,10 @@
 # Possible values:
 #	left, right, none, -
 
+# first line with information must be name!
+LDiode
+
+# Second is otional - subparts
 in, out
 
 in:left;	in.n:right, out:left, out.n:right
