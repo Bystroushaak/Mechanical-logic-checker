@@ -1,0 +1,13 @@
+# Left diode gear
+# Possible values:
+#	left, right, none, -
+
+in, out
+
+in:left;	in.n:right, out:left, out.n:right
+in:right;	in.n:left
+in:none;	in.n:none
+
+out:left;	out.n:right
+out:right;	out.n:left, in:right, in.n:left
+out:none;	out.n:none

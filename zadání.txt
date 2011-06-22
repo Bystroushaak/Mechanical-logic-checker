@@ -1,0 +1,12 @@
+Cílem projektu je vytvořit program, jenž umožní ověřování správnosti zapsaného
+schématu ozubené logiky.
+
+Konfigurace:
+    Program se konfiguruje prostřednictvím definic jednotlivých součástek ve 
+    složce parts.
+    
+    Jednotlivé textové soubory v této složce představují definice jednotlivých
+    součástek. V souborech je možné používat jednořádkové komentáře uvozené 
+    znakem '#' a končící '\n'. Nové řádky jsou parserem ignorovány stejně jako
+    komentáře.
+    
