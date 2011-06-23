@@ -1,12 +1,71 @@
 Cílem projektu je vytvořit program, jenž umožní ověřování správnosti zapsaného
 schématu ozubené logiky.
 
-Konfigurace:
-    Program se konfiguruje prostřednictvím definic jednotlivých součástek ve 
-    složce parts.
-    
-    Jednotlivé textové soubory v této složce představují definice jednotlivých
-    součástek. V souborech je možné používat jednořádkové komentáře uvozené 
-    znakem '#' a končící '\n'. Nové řádky jsou parserem ignorovány stejně jako
-    komentáře.
-    
+
+I. Návrh programu:
+	Ve složce "parts" se nacházejí jednotlivé třídy reprezentující součástky.
+	
+Ia
+	Každá třída představuje jednu součástku. Všechny třídy dědí z jedné společné
+	třídy "Part" definované v souboru "parts/part.d".
+	
+	Každá třída má binární atribut "checked", který je nastaven na true po jejím
+	zpracování.
+	
+Ib
+	Po spuštění programu je načten script (viz kapitola II). Každý script musí
+	obsahovat minimálně jednu definici instance - "igear", jinak je zahlášena
+	chyba.
+	
+Ic  
+	Ze scriptu jsou postupně parsovány jednotlivé definice instancí. 
+
+	Zároveň s tím probíhá vytváření příslušných tříd, které jsou ukládány do 
+	slovníku, kde klíč je jméno instance. 
+	
+	Parsování probíhá předáváním řádků obsahujících znak '=' a jméno třídy 
+	konstruktoru příslušné třídy, která se postará o parsování.
+	
+	Pokud při parsování třída narazí na chybu, dá o tom vědět pomocí vyjímky.
+
+Id
+	Předchozí proces parsování definicí následuje spojování instancí. Při nich
+	program prochází řádky scriptu a spojuje instance identifikované jmény v
+	hvězdicovou strukturu. 
+	
+	Spojení je obousměrné.
+
+Ie
+	Po procesu spojení začíná proces procházení do hloubky.
+	
+	Na stack jsou umístěny jednotlivé instance vstupních proměnných "igear".
+
+	Následuje 
+
+
+
+II. Script
+	Program přijímá na svůj vstup script, který ověřuje. Ve scriptu jsou 
+	definované instance jednotlivých součástek a jejich spojení.
+	
+IIa
+	Definice instance součástek vypadá následujícím způsobem:
+	
+		<jméno_instance> = <jméno_součástky> [<jednotlivé> <parametry>]
+		
+	Na jednom řádku smí být definována pouze jedna instance. Jméno instance i
+	jméno součástky smé obsahovat pouze alfanumerické znaky. Znaky smí být 
+	odděleny libovolným počtem mezer, nebo tabulátorů.  
+	
+	Příklad:
+	
+		d1 = ldiode
+		d2 = igear L P L
+
+IIb
+	Spojení instancí je možné provést následujícím způsobem:
+	
+		<jméno_instance> - <jméno_instance2>
+	
+	Na jednom řádku smí být definována pouze jedna instance. Znaky smí být 
+	odděleny libovolným počtem mezer, nebo tabulátorů.  
