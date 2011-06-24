@@ -52,7 +52,7 @@ II. Script
 IIa
 	Definice instance součástek vypadá následujícím způsobem:
 	
-		<jméno_instance> = <jméno_součástky> [<jednotlivé> <parametry>]
+		<jméno_součástky> : <jméno_instance> [<jednotlivé> <parametry>]
 		
 	Na jednom řádku smí být definována pouze jedna instance. Jméno instance i
 	jméno součástky smé obsahovat pouze alfanumerické znaky. Znaky smí být 
@@ -60,8 +60,8 @@ IIa
 	
 	Příklad:
 	
-		d1 = ldiode
-		d2 = igear L P L
+		ldiode : d1
+		igear  : d2 L P L
 
 IIb
 	Spojení instancí je možné provést následujícím způsobem:
