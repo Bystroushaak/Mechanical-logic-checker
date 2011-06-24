@@ -2,7 +2,7 @@ Cílem projektu je vytvořit program, jenž umožní ověřování správnosti z
 schématu ozubené logiky.
 
 
-I. Návrh programu:
+I.  Návrh programu:
 	Ve složce "parts" se nacházejí jednotlivé třídy reprezentující součástky.
 	
 Ia
@@ -38,8 +38,9 @@ Id
 Ie
 	Po procesu spojení začíná proces procházení do hloubky.
 	
-	Na stack jsou umístěny jednotlivé instance vstupních proměnných "igear".
-
+	Na stack jsou umístěny jednotlivé instance vstupních proměnných "igear" (viz
+	kapitola V).
+	
 	Následuje 
 
 
@@ -68,4 +69,41 @@ IIb
 		<jméno_instance> - <jméno_instance2>
 	
 	Na jednom řádku smí být definována pouze jedna instance. Znaky smí být 
-	odděleny libovolným počtem mezer, nebo tabulátorů.  
+	odděleny libovolným počtem mezer, nebo tabulátorů.
+
+
+III. Part
+	Třída part je předek všech odvozených tříd. Obsahuje tyto členské proměnné:
+
+		private string name;
+		private bool checked = False;
+		enum ROTATION
+		public const gear_num;
+
+	Dále obsahuje tyto metody:
+
+		string getName()
+		void setName(string)
+		bool isChecked()
+		void setChecked(string)
+
+		abstract Part[] react(enum ROTATION)
+			vrací strukturu obsahující dvojice (soused, ROTATION)
+		abstract void addNeighbour(Part)
+
+		
+		
+
+IV. Gear
+	Gear představuje jednoduché kolo.
+
+V.  Igear
+	Představuje vstupní ozubené kolo. Přijímá parametry udávající jeho stavy v
+	čase.
+
+	Jako takový má další rozšiřující metody:
+
+		void nextState()
+		uint getStateLen()
+		uint remainingStates()
+	
