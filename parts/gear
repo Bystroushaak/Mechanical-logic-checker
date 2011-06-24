@@ -1,7 +1,0 @@
-# Ordinary gear
-
-Gear
-
-gear:left;	gear.n:right
-gear:right;	gear.n:left
-gear:none;	gear.n:none
