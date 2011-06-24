@@ -53,19 +53,22 @@ public class IGear : Gear{
 		}
 	}
 
-	public PartContainer[] nextState(){
-		PartContainer[] output;
-		
+	public void nextState(){
 		if (actual_state + 1 < states.length){
 			actual_state++;
 			this.r = states[actual_state];
 			this.rotating = (this.r != Rotation.None);
 		}
+	}
 
+	public PartContainer[] begin(){
+		PartContainer[] output;
+		
 		PartContainer p;
 		foreach(n; this.neighbours){
 			p.part = n;
 			p.rotation = this.r;
+			p.from = this;
 
 			output ~= p;
 		}
@@ -79,6 +82,6 @@ public class IGear : Gear{
 
 	public override string toString(){
 		return  super.toString() ~
-				"hasNext:  " ~ std.conv.to!(string)(this.hasNext);
+				"hasNext:  " ~ std.conv.to!(string)(this.hasNext) ~ "\n";
 	}
 }

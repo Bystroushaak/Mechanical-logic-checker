@@ -8,8 +8,8 @@ public class Gear : Part{
 	this(){} // kinky :S
 	
 	// Parse records defined as "Type : name"
-	this(string line){
-		this.type = "gear";
+	this(string line, string type = "gear"){
+		this.type = type;
 		
 		if (line.indexOf(':') <= 0)
 			throw new PartDefinitionException("No definition!");
@@ -28,7 +28,7 @@ public class Gear : Part{
 		table[Rotation.Left]  = Rotation.Right;
 		table[Rotation.Right] = Rotation.Left;
 		table[Rotation.None]  = Rotation.None;
-		table[Rotation.Any]   = Rotation.Any;
+		table[Rotation.Any]   = this.r;
 
 		return table[nr];
 	}

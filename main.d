@@ -8,15 +8,31 @@ import parts.gear;
 import parts.igear;
 
 /* TODO
- * Pridelat check duplicitnich nazvu
+	 * pridelat moznost komentaru
 */
+
+
+void printStackTraceHeader(ref File o, Part[string] gamedesk){
+	foreach(key, val; gamedesk)
+		o.write(key ~ ", ");
+	
+	o.writeln();
+}
+
+void printStackTrace(ref File o, Part[string] gamedesk){
+	foreach(key, val; gamedesk)
+		o.write(std.conv.to!(string)(val.getRotation()) ~ ", ");
+
+	o.writeln();
+}
 
 int main(string[] args){
 	// sem dodelat nejake smysluplne parsovani argumentu & nacteni souboru
 	string[] script = readText("script.chk").splitlines();
 
+	Part[] inputs;
 	Part[string] gamedesk;
-	Part[] stack;
+	PartContainer[] stack;
 
 	// Create objects
 	Part tmp;
@@ -35,7 +51,7 @@ int main(string[] args){
 					tmp = new Gear(line);
 				}else if (line.startsWith("igear")){
 					tmp = new IGear(line);
-					stack ~= tmp;
+					inputs ~= tmp;
 				}else{
 					stderr.writeln("Error on line " ~ std.conv.to!(string)(line_num) ~ " '" ~ line ~ "'");
 					stderr.writeln(">> Unknown part");
@@ -83,6 +99,23 @@ int main(string[] args){
 
 			gamedesk[tmp_pars[0]].addNeighbour(gamedesk[tmp_pars[1]]);
 			gamedesk[tmp_pars[1]].addNeighbour(gamedesk[tmp_pars[0]]);
+		}
+	}
+
+	// Main algorithm - emulate signal propagation
+	foreach(input; inputs){
+		stack ~= (cast(IGear) input).begin();
+	}
+	
+	for (uint act = 0; act + 1 < stack.length; act++){
+		try{
+			stack ~= stack[act].part.react(stack[act]);
+		}catch(RotationCollisionException e){
+			stderr.writeln("# Error! " ~ e.msg ~ " in collision!");
+			writeln();
+			printStackTraceHeader(stderr, gamedesk);
+			printStackTrace(stderr, gamedesk);
+			return 3;
 		}
 	}
 
