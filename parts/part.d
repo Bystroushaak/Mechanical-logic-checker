@@ -1,5 +1,7 @@
 module parts.part;
 
+import std.conv;
+
 public enum Rotation {Right, Left, None, Any};
 
 public struct PartContainer{
@@ -12,6 +14,7 @@ public abstract class Part{
 	protected string name;
 	protected uint gear_num;
 	protected Rotation r = Rotation.None;
+	protected string type;
 
 	protected Part[] neighbours;
 
@@ -26,11 +29,15 @@ public abstract class Part{
 		return this.rotating;
 	}
 
+	public Rotation getRotation(){
+		return this.r;
+	}
+
 	public void addNeighbour(Part neighbour){
 		this.neighbours ~= neighbour;
 	}
 
-	protected abstract Rotation reaction(Rotation);
+	protected Rotation reaction(Rotation);
 	
 	public PartContainer[] react(Rotation neigh_r){
 		PartContainer[] output;
@@ -42,7 +49,11 @@ public abstract class Part{
 			foreach(n; this.neighbours){
 				p.part = n;
 				p.rotation = this.r;
+				
+				output ~= p;
 			}
+
+			this.rotating = true;
 		}else{
 			if (this.reaction(neigh_r) != this.r && this.r != Rotation.Any)
 				throw new RotationCollisionException(this.name);
@@ -50,15 +61,38 @@ public abstract class Part{
 
 		return output;
 	}
+
+	public string toString(){
+		string rotation;
+
+		if (this.rotating)
+			rotation = "Rotation: " ~ std.conv.to!(string)(this.r) ~ "\n";
+		
+		return "Name:\t  " ~ this.type ~ ":" ~ this.name ~ "\n" ~
+			   "Rotating: " ~ std.conv.to!(string)(this.rotating) ~ "\n" ~
+			   rotation;
+	}
 }
 
-public class PartDefinitionException : Exception{
+public class PartException : Exception{
 	this(string msg){
 		super(msg);
 	}
 }
 
-public class RotationCollisionException : Exception{
+public class PartDefinitionException : PartException{
+	this(string msg){
+		super(msg);
+	}
+}
+
+public class RotationCollisionException : PartException{
+	this(string msg){
+		super(msg);
+	}
+}
+
+public class UnknownPartParameterException : PartException{
 	this(string msg){
 		super(msg);
 	}
