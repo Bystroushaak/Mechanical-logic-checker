@@ -6,13 +6,13 @@ public enum Rotation {Right, Left, None, Any};
 
 public struct PartContainer{
 	Part part;
+	Part from;
 	Rotation rotation;
 }
 
 public abstract class Part{
 	protected bool rotating = false;
 	protected string name;
-	protected uint gear_num;
 	protected Rotation r = Rotation.None;
 	protected string type;
 
@@ -25,6 +25,10 @@ public abstract class Part{
 		this.name = new_name;
 	}
 
+	public string getType(){
+		return this.type;
+	}
+
 	public bool isRotating(){
 		return this.rotating;
 	}
@@ -33,44 +37,57 @@ public abstract class Part{
 		return this.r;
 	}
 
+	public void cleanRotation(){
+		this.rotating = false;
+		this.r = Rotation.None;
+	}
+
 	public void addNeighbour(Part neighbour){
 		this.neighbours ~= neighbour;
 	}
 
 	protected Rotation reaction(Rotation);
 	
-	public PartContainer[] react(Rotation neigh_r){
+	public PartContainer[] react(PartContainer pc){
 		PartContainer[] output;
 
 		if (!this.rotating){
-			this.r = this.reaction(neigh_r);
+			this.r = this.reaction(pc.rotation);
 
 			PartContainer p;
 			foreach(n; this.neighbours){
 				p.part = n;
 				p.rotation = this.r;
+				p.from = this;
 				
 				output ~= p;
 			}
 
-			this.rotating = true;
+			this.rotating = (this.r != Rotation.None);
 		}else{
-			if (this.reaction(neigh_r) != this.r && this.r != Rotation.Any)
-				throw new RotationCollisionException(this.name);
+			if (this.reaction(pc.rotation) != this.r && this.r != Rotation.Any)
+				throw new RotationCollisionException(
+					this.name ~ ":" ~ std.conv.to!(string)(this.r) ~ " with " ~
+					pc.from.getName() ~ ":" ~
+					std.conv.to!(string)(pc.from.getRotation())
+				);
 		}
 
 		return output;
 	}
 
 	public string toString(){
-		string rotation;
+		string rotation, neighbours;
 
 		if (this.rotating)
 			rotation = "Rotation: " ~ std.conv.to!(string)(this.r) ~ "\n";
+
+		foreach(p; this.neighbours)
+			neighbours ~= "Neighbour: " ~ p.getName() ~ "\n";
 		
 		return "Name:\t  " ~ this.type ~ ":" ~ this.name ~ "\n" ~
 			   "Rotating: " ~ std.conv.to!(string)(this.rotating) ~ "\n" ~
-			   rotation;
+			   rotation ~ neighbours;
 	}
 }
 

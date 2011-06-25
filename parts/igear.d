@@ -57,9 +57,11 @@ public class IGear : Gear{
 		if (actual_state + 1 < states.length){
 			actual_state++;
 			this.r = states[actual_state];
-			this.rotating = (this.r != Rotation.None);
+			this.rotating = true;
 		}
 	}
+
+	public override void cleanRotation(){}
 
 	public PartContainer[] begin(){
 		PartContainer[] output;
@@ -81,7 +83,14 @@ public class IGear : Gear{
 	}
 
 	public override string toString(){
+		string states;
+
+		foreach(s; this.states){
+			states ~= std.conv.to!(string)(s) ~ ", ";
+		}
+		
 		return  super.toString() ~
-				"hasNext:  " ~ std.conv.to!(string)(this.hasNext) ~ "\n";
+				"hasNext:  " ~ std.conv.to!(string)(this.hasNext) ~ " " ~
+				states ~ "\n";
 	}
 }

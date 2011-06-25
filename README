@@ -1,0 +1,31 @@
+mlchk v1.0.0 by Bystroushaak (bystrousak@kitakitsune.org)
+
+This program is used for emulating mechanical logic. I don't really expect that
+this could be usefull for anyone except me, but hope dies last..
+
+Program accepts pairs of information - part "type : instance name", 
+"name - other name". This is pretty lame, so maybe one day I will write  more
+usefull parser. 
+
+Possible parts are:
+    gear : <instance name>
+    igear : <instance name> [<parameters (L for left, R for right, N for None)>]
+    rdiode : <instance name> # every diode has .in and .out property!
+    ldiode : <instance name>
+
+Script example:
+
+    # lines starting with '#' are ignored
+    igear : in L R N
+    rdiode : rd
+    gear : g
+
+    in - rd.in
+    rd.out - g
+
+Output is in dsv - http://en.wikipedia.org/wiki/Delimiter-separated_values :
+
+    in, rd.in, rd.out, g, 
+    Left, Right, Right, Left, 
+    Right, Left, None, None, 
+    None, None, None, None,
