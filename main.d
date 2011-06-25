@@ -112,7 +112,7 @@ int main(string[] args){
 					return 2;
 				}
 			}
-		}catch(PartDefinitionException e){
+		}catch(Exception e){
 			stderr.writeln("Error on line " ~ std.conv.to!(string)(line_num) ~ " '" ~ line ~ "'");
 			stderr.writeln(">> " ~ e.msg);
 			return 1;
