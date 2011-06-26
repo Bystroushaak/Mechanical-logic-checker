@@ -122,7 +122,7 @@ int main(string[] args){
 	// Join objects
 	string[] tmp_pars;
 	foreach(line; script){
-		line = line.strip();
+		line = line.strip().tolower();
 
 		if (line == "" || line.strip().startsWith("#"))
 			continue;
@@ -131,6 +131,12 @@ int main(string[] args){
 			tmp_pars = line.split("-");
 			tmp_pars[0] = tmp_pars[0].strip();
 			tmp_pars[1] = tmp_pars[1].strip();
+			
+			if (tmp_pars[0] == tmp_pars[1]){
+				stderr.writeln("Error on line " ~ std.conv.to!(string)(line_num) ~ " '" ~ line ~ "'");
+				stderr.writeln(">> You can't join same part!");
+				return 4;
+			}
 
 			if (tmp_pars[0] !in gamedesk){
 				stderr.writeln("Error on line " ~ std.conv.to!(string)(line_num) ~ " '" ~ line ~ "'");
