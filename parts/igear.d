@@ -65,6 +65,9 @@ public class IGear : Gear{
 
 	public PartContainer[] begin(){
 		PartContainer[] output;
+
+		if (!this.rotating)
+			return output;
 		
 		PartContainer p;
 		foreach(n; this.neighbours){
